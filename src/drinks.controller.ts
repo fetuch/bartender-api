@@ -1,4 +1,5 @@
 import { CreateDrinkDto } from './create-drink.dto';
+import { UpdateDrinkDto } from './update-drink.dto';
 import {
   Body,
   Controller,
@@ -28,7 +29,7 @@ export class DrinksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id, @Body() input) {}
+  update(@Param('id') id, @Body() input: UpdateDrinkDto) {}
 
   @Delete(':id')
   @HttpCode(204)

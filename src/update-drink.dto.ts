@@ -1,8 +1,4 @@
-export class UpdateDrinkDto {
-  name?: string;
-  category?: string;
-  glass?: string;
-  instructions?: string;
-  ingredients?: string[];
-  dateAdded?: string;
-}
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateDrinkDto } from './create-drink.dto';
+
+export class UpdateDrinkDto extends PartialType(CreateDrinkDto) {}
