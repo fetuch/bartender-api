@@ -1,3 +1,4 @@
+import { Repository } from "typeorm/repository/Repository";
 import { CreateDrinkDto } from "./create-drink.dto";
 import { Drink } from "./drink.entity";
 import { UpdateDrinkDto } from "./update-drink.dto";
@@ -11,54 +12,49 @@ import {
   Patch,
   Post,
 } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm/dist";
 
 @Controller("/drinks")
 export class DrinksController {
-  private drinks: Drink[] = [];
+  constructor(
+    @InjectRepository(Drink)
+    private readonly repository: Repository<Drink>
+  ) {}
 
   @Get()
-  findAll() {
-    return this.drinks;
+  async findAll() {
+    return await this.repository.find();
   }
 
   @Get(":id")
-  findOne(@Param("id") id) {
-    const drink = this.drinks.find((drink) => drink.id === parseInt(id, 10));
-    return drink;
+  async findOne(@Param("id") id: number) {
+    return await this.repository.findOneBy({ id: id });
   }
 
   @Post()
-  create(@Body() input: CreateDrinkDto) {
-    const drink: Drink = {
+  async create(@Body() input: CreateDrinkDto) {
+    return await this.repository.save({
       ...input,
       createdAt: new Date(),
       updatedAt: new Date(),
-      id: this.drinks.length + 1,
-    };
-
-    this.drinks.push(drink);
-
-    return drink;
+    });
   }
 
   @Patch(":id")
-  update(@Param("id") id, @Body() input: UpdateDrinkDto) {
-    const index = this.drinks.findIndex(
-      (drink) => drink.id === parseInt(id, 10)
-    );
+  async update(@Param("id") id, @Body() input: UpdateDrinkDto) {
+    const drink = await this.repository.findOneBy({ id: id });
 
-    this.drinks[index] = {
-      ...this.drinks[index],
+    return await this.repository.save({
+      ...drink,
       ...input,
       updatedAt: new Date(),
-    };
-
-    return this.drinks[index];
+    });
   }
 
   @Delete(":id")
   @HttpCode(204)
-  remove(@Param("id") id) {
-    this.drinks = this.drinks.filter((drink) => drink.id !== parseInt(id, 10));
+  async remove(@Param("id") id: number) {
+    const drink = await this.repository.findOneBy({ id: id });
+    await this.repository.remove(drink);
   }
 }

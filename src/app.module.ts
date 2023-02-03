@@ -17,6 +17,7 @@ import { Drink } from "./drink.entity";
       entities: [Drink],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Drink]),
   ],
   controllers: [AppController, DrinksController],
   providers: [AppService],
