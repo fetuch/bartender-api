@@ -11,6 +11,7 @@ import {
   Param,
   Patch,
   Post,
+  ValidationPipe,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm/dist";
 
@@ -32,7 +33,7 @@ export class DrinksController {
   }
 
   @Post()
-  async create(@Body() input: CreateDrinkDto) {
+  async create(@Body(ValidationPipe) input: CreateDrinkDto) {
     return await this.repository.save({
       ...input,
       createdAt: new Date(),
