@@ -9,6 +9,7 @@ import {
   Get,
   HttpCode,
   Logger,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -34,7 +35,13 @@ export class DrinksController {
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    return await this.repository.findOneBy({ id: id });
+    const drink = await this.repository.findOneBy({ id: id });
+
+    if (!drink) {
+      throw new NotFoundException();
+    }
+
+    return drink;
   }
 
   @Post()
@@ -50,6 +57,10 @@ export class DrinksController {
   async update(@Param("id") id, @Body() input: UpdateDrinkDto) {
     const drink = await this.repository.findOneBy({ id: id });
 
+    if (!drink) {
+      throw new NotFoundException();
+    }
+
     return await this.repository.save({
       ...drink,
       ...input,
@@ -61,6 +72,11 @@ export class DrinksController {
   @HttpCode(204)
   async remove(@Param("id") id: number) {
     const drink = await this.repository.findOneBy({ id: id });
+
+    if (!drink) {
+      throw new NotFoundException();
+    }
+
     await this.repository.remove(drink);
   }
 }
