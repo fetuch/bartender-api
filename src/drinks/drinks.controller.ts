@@ -8,6 +8,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   Param,
   Patch,
   Post,
@@ -16,6 +17,8 @@ import { InjectRepository } from "@nestjs/typeorm/dist";
 
 @Controller("/drinks")
 export class DrinksController {
+  private readonly logger = new Logger(DrinksController.name);
+
   constructor(
     @InjectRepository(Drink)
     private readonly repository: Repository<Drink>
@@ -23,7 +26,10 @@ export class DrinksController {
 
   @Get()
   async findAll() {
-    return await this.repository.find();
+    this.logger.log("Hit the find all drinks route");
+    const drinks = await this.repository.find();
+    this.logger.debug(`Found ${drinks.length} drinks.`);
+    return drinks;
   }
 
   @Get(":id")
