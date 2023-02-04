@@ -1,7 +1,7 @@
 import { Repository } from "typeorm/repository/Repository";
-import { CreateDrinkDto } from "./create-drink.dto";
-import { Drink } from "./drink.entity";
-import { UpdateDrinkDto } from "./update-drink.dto";
+import { CreateDrinkDto } from "../drinks/create-drink.dto";
+import { Drink } from "../drinks/drink.entity";
+import { UpdateDrinkDto } from "../drinks/update-drink.dto";
 import {
   Body,
   Controller,
