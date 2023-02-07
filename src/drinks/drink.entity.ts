@@ -1,15 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Category } from "./category.entity";
 
 @Entity({ name: "drinks" })
 export class Drink {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @ManyToOne(() => Category, (category) => category.drinks, {
+    nullable: false,
+  })
+  @JoinColumn({
+    name: "category_id",
+  })
+  category: Category;
 
   @Column()
-  category: string;
+  name: string;
 
   @Column()
   glass: string;

@@ -7,10 +7,6 @@ export class CreateDrinkDto {
 
   @IsString()
   @Length(2, 255)
-  category: string;
-
-  @IsString()
-  @Length(2, 255)
   glass: string;
 
   @IsString()
