@@ -7,6 +7,6 @@ async function bootstrap() {
     logger: ["error", "warn", "debug", "log"],
   });
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3002);
+  await app.listen(Number.parseInt(process.env.APP_PORT, 10));
 }
 bootstrap();
