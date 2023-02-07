@@ -1,7 +1,7 @@
 import { registerAs } from "@nestjs/config";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-import { Category } from "./../drinks/category.entity";
+import { Category } from "./../categories/category.entity";
 import { Drink } from "./../drinks/drink.entity";
 
 export default registerAs(
