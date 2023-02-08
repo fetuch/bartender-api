@@ -48,8 +48,8 @@ export class CategoriesController {
   async create(@Body() input: CreateCategoryDto) {
     return await this.repository.save({
       ...input,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     });
   }
 
@@ -64,7 +64,7 @@ export class CategoriesController {
     return await this.repository.save({
       ...category,
       ...input,
-      updatedAt: new Date(),
+      updated_at: new Date(),
     });
   }
 

@@ -30,8 +30,8 @@ export class Drink {
   instructions: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
   @Column()
-  updatedAt: Date;
+  updated_at: Date;
 }

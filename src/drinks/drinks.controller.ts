@@ -48,8 +48,8 @@ export class DrinksController {
   async create(@Body() input: CreateDrinkDto) {
     return await this.repository.save({
       ...input,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     });
   }
 
@@ -64,7 +64,7 @@ export class DrinksController {
     return await this.repository.save({
       ...drink,
       ...input,
-      updatedAt: new Date(),
+      updated_at: new Date(),
     });
   }
 

@@ -13,8 +13,8 @@ export class Category {
   name: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
   @Column()
-  updatedAt: Date;
+  updated_at: Date;
 }
