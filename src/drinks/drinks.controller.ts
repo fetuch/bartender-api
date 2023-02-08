@@ -28,14 +28,21 @@ export class DrinksController {
   @Get()
   async findAll() {
     this.logger.log("Hit the find all drinks route");
-    const drinks = await this.repository.find();
+    const drinks = await this.repository.find({
+      relations: ["category"],
+    });
     this.logger.debug(`Found ${drinks.length} drinks.`);
     return drinks;
   }
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    const drink = await this.repository.findOneBy({ id: id });
+    const drink = await this.repository.findOne({
+      where: {
+        id,
+      },
+      relations: ["category"],
+    });
 
     if (!drink) {
       throw new NotFoundException();
