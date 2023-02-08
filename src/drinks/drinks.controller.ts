@@ -15,6 +15,7 @@ import {
   Post,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm/dist";
+import { DrinksService } from "./drinks.service";
 
 @Controller("/drinks")
 export class DrinksController {
@@ -22,7 +23,8 @@ export class DrinksController {
 
   constructor(
     @InjectRepository(Drink)
-    private readonly repository: Repository<Drink>
+    private readonly repository: Repository<Drink>,
+    private readonly drinksService: DrinksService
   ) {}
 
   @Get()
@@ -37,12 +39,13 @@ export class DrinksController {
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    const drink = await this.repository.findOne({
-      where: {
-        id,
-      },
-      relations: ["category"],
-    });
+    const drink = await this.drinksService.getDrink(id);
+    // const drink = await this.repository.findOne({
+    //   where: {
+    //     id,
+    //   },
+    //   relations: ["category"],
+    // });
 
     if (!drink) {
       throw new NotFoundException();
