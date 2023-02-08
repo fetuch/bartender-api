@@ -8,6 +8,7 @@ import { ConfigModule } from "@nestjs/config";
 import ormConfig from "./config/orm.config";
 import ormConfigProd from "./config/orm.config.prod";
 import { IngredientsModule } from "./ingredients/ingredients.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { IngredientsModule } from "./ingredients/ingredients.module";
       useFactory:
         process.env.NODE_ENV !== "production" ? ormConfig : ormConfigProd,
     }),
+    AuthModule,
     CategoriesModule,
     DrinksModule,
     IngredientsModule,
