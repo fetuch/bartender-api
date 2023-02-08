@@ -7,6 +7,7 @@ import { DrinksModule } from "./drinks/drinks.module";
 import { ConfigModule } from "@nestjs/config";
 import ormConfig from "./config/orm.config";
 import ormConfigProd from "./config/orm.config.prod";
+import { IngredientsModule } from "./ingredients/ingredients.module";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import ormConfigProd from "./config/orm.config.prod";
     }),
     CategoriesModule,
     DrinksModule,
+    IngredientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

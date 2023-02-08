@@ -1,5 +1,6 @@
 import { registerAs } from "@nestjs/config";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { Ingredient } from "src/ingredients/ingredient.entity";
 
 import { Category } from "./../categories/category.entity";
 import { Drink } from "./../drinks/drink.entity";
@@ -13,7 +14,7 @@ export default registerAs(
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [Category, Drink],
+    entities: [Category, Drink, Ingredient],
     synchronize: true,
   })
 );
