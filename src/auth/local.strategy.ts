@@ -6,7 +6,7 @@ import { Repository } from "typeorm";
 import { User } from "./user.entity";
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy, "local") {
   private readonly logger = new Logger(LocalStrategy.name);
 
   constructor(
