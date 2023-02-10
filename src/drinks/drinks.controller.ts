@@ -6,6 +6,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   Logger,
@@ -65,27 +66,43 @@ export class DrinksController {
   }
 
   @Patch(":id")
-  async update(@Param("id") id, @Body() input: UpdateDrinkDto) {
+  @UseGuards(AuthGuardJwt)
+  async update(
+    @Param("id") id: number,
+    @Body() input: UpdateDrinkDto,
+    @CurrentUser() user: User
+  ) {
     const drink = await this.repository.findOneBy({ id: id });
 
     if (!drink) {
       throw new NotFoundException();
     }
 
-    return await this.repository.save({
-      ...drink,
-      ...input,
-      updated_at: new Date(),
-    });
+    if (drink.creator_id !== user.id) {
+      throw new ForbiddenException(
+        null,
+        "You are not authorized to change this drink"
+      );
+    }
+
+    return await this.drinksService.updateDrink(drink, input);
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuardJwt)
   @HttpCode(204)
-  async remove(@Param("id") id: number) {
+  async remove(@Param("id") id: number, @CurrentUser() user: User) {
     const drink = await this.repository.findOneBy({ id: id });
 
     if (!drink) {
       throw new NotFoundException();
+    }
+
+    if (drink.creator_id !== user.id) {
+      throw new ForbiddenException(
+        null,
+        "You are not authorized to remove this drink"
+      );
     }
 
     await this.repository.remove(drink);

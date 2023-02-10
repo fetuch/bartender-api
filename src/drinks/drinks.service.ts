@@ -4,6 +4,7 @@ import { User } from "src/auth/user.entity";
 import { Repository } from "typeorm";
 import { CreateDrinkDto } from "./create-drink.dto";
 import { Drink } from "./drink.entity";
+import { UpdateDrinkDto } from "./update-drink.dto";
 
 @Injectable()
 export class DrinksService {
@@ -33,6 +34,17 @@ export class DrinksService {
       ...input,
       creator: user,
       created_at: new Date(),
+      updated_at: new Date(),
+    });
+  }
+
+  public async updateDrink(
+    drink: Drink,
+    input: UpdateDrinkDto
+  ): Promise<Drink> {
+    return await this.drinksRepository.save({
+      ...drink,
+      ...input,
       updated_at: new Date(),
     });
   }
