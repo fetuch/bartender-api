@@ -13,9 +13,13 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm/dist";
 import { DrinksService } from "./drinks.service";
+import { CurrentUser } from "src/auth/current-user.decorator";
+import { User } from "src/auth/user.entity";
+import { AuthGuardJwt } from "src/auth/auth-guard.jwt";
 
 @Controller("/drinks")
 export class DrinksController {
@@ -55,12 +59,9 @@ export class DrinksController {
   }
 
   @Post()
-  async create(@Body() input: CreateDrinkDto) {
-    return await this.repository.save({
-      ...input,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+  @UseGuards(AuthGuardJwt)
+  async create(@Body() input: CreateDrinkDto, @CurrentUser() user: User) {
+    return this.drinksService.createDrink(input, user);
   }
 
   @Patch(":id")

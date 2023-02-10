@@ -1,7 +1,9 @@
+import { Drink } from "src/drinks/drink.entity";
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -32,4 +34,7 @@ export class User {
     name: "profile_id",
   })
   profile: Profile;
+
+  @OneToMany(() => Drink, (drink) => drink.creator)
+  drinks: Drink[];
 }

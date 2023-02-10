@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Category } from "../categories/category.entity";
 import { Ingredient } from "src/ingredients/ingredient.entity";
+import { User } from "src/auth/user.entity";
 
 @Entity({ name: "drinks" })
 export class Drink {
@@ -51,4 +52,11 @@ export class Drink {
 
   @Column()
   updated_at: Date;
+
+  @ManyToOne(() => User, (user) => user.drinks)
+  @JoinColumn({ name: "creator_id" })
+  creator: User;
+
+  @Column({ nullable: true })
+  creator_id: number;
 }
