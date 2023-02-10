@@ -21,8 +21,14 @@ import { DrinksService } from "./drinks.service";
 import { CurrentUser } from "src/auth/current-user.decorator";
 import { User } from "src/auth/user.entity";
 import { AuthGuardJwt } from "src/auth/auth-guard.jwt";
+import {
+  ClassSerializerInterceptor,
+  SerializeOptions,
+} from "@nestjs/common/serializer";
+import { UseInterceptors } from "@nestjs/common/decorators";
 
 @Controller("/drinks")
+@SerializeOptions({ strategy: "excludeAll" })
 export class DrinksController {
   private readonly logger = new Logger(DrinksController.name);
 
@@ -33,6 +39,7 @@ export class DrinksController {
   ) {}
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   async findAll() {
     this.logger.log("Hit the find all drinks route");
     const drinks = await this.repository.find({
@@ -43,6 +50,7 @@ export class DrinksController {
   }
 
   @Get(":id")
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param("id") id: number) {
     const drink = await this.drinksService.getDrink(id);
     // const drink = await this.repository.findOne({
@@ -61,12 +69,14 @@ export class DrinksController {
 
   @Post()
   @UseGuards(AuthGuardJwt)
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() input: CreateDrinkDto, @CurrentUser() user: User) {
     return this.drinksService.createDrink(input, user);
   }
 
   @Patch(":id")
   @UseGuards(AuthGuardJwt)
+  @UseInterceptors(ClassSerializerInterceptor)
   async update(
     @Param("id") id: number,
     @Body() input: UpdateDrinkDto,

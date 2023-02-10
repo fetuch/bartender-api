@@ -10,10 +10,12 @@ import {
 import { Category } from "../categories/category.entity";
 import { Ingredient } from "src/ingredients/ingredient.entity";
 import { User } from "src/auth/user.entity";
+import { Expose } from "class-transformer";
 
 @Entity({ name: "drinks" })
 export class Drink {
   @PrimaryGeneratedColumn()
+  @Expose()
   id: number;
 
   @ManyToOne(() => Category, (category) => category.drinks, {
@@ -22,6 +24,7 @@ export class Drink {
   @JoinColumn({
     name: "category_id",
   })
+  @Expose()
   category: Category;
 
   @ManyToMany(() => Ingredient, (ingredient) => ingredient.drinks, {
@@ -36,15 +39,19 @@ export class Drink {
       name: "ingredient_id",
     },
   })
+  @Expose()
   ingredients: Ingredient[];
 
   @Column()
+  @Expose()
   name: string;
 
   @Column()
+  @Expose()
   glass: string;
 
   @Column()
+  @Expose()
   instructions: string;
 
   @Column()

@@ -4,6 +4,7 @@ import { Category } from "./category.entity";
 import { UpdateCategoryDto } from "./update-category.dto";
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -13,10 +14,13 @@ import {
   Param,
   Patch,
   Post,
+  SerializeOptions,
+  UseInterceptors,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm/dist";
 
 @Controller("/categories")
+@SerializeOptions({ strategy: "excludeAll" })
 export class CategoriesController {
   private readonly logger = new Logger(CategoriesController.name);
 
@@ -26,6 +30,7 @@ export class CategoriesController {
   ) {}
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   async findAll() {
     this.logger.log("Hit the find all categories route");
     const categories = await this.repository.find();
@@ -34,6 +39,7 @@ export class CategoriesController {
   }
 
   @Get(":id")
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param("id") id: number) {
     const category = await this.repository.findOneBy({ id: id });
 
@@ -45,6 +51,7 @@ export class CategoriesController {
   }
 
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() input: CreateCategoryDto) {
     return await this.repository.save({
       ...input,
@@ -54,6 +61,7 @@ export class CategoriesController {
   }
 
   @Patch(":id")
+  @UseInterceptors(ClassSerializerInterceptor)
   async update(@Param("id") id, @Body() input: UpdateCategoryDto) {
     const category = await this.repository.findOneBy({ id: id });
 

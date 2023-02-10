@@ -4,6 +4,7 @@ import { Ingredient } from "./ingredient.entity";
 import { UpdateIngredientDto } from "./update-ingredient.dto";
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -13,10 +14,13 @@ import {
   Param,
   Patch,
   Post,
+  SerializeOptions,
+  UseInterceptors,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm/dist";
 
 @Controller("/ingredients")
+@SerializeOptions({ strategy: "excludeAll" })
 export class IngredientsController {
   private readonly logger = new Logger(IngredientsController.name);
 
@@ -26,6 +30,7 @@ export class IngredientsController {
   ) {}
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   async findAll() {
     this.logger.log("Hit the find all ingredients route");
     const ingredients = await this.repository.find();
@@ -34,6 +39,7 @@ export class IngredientsController {
   }
 
   @Get(":id")
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param("id") id: number) {
     const ingredient = await this.repository.findOne({
       where: {
@@ -49,6 +55,7 @@ export class IngredientsController {
   }
 
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() input: CreateIngredientDto) {
     return await this.repository.save({
       ...input,
@@ -58,6 +65,7 @@ export class IngredientsController {
   }
 
   @Patch(":id")
+  @UseInterceptors(ClassSerializerInterceptor)
   async update(@Param("id") id, @Body() input: UpdateIngredientDto) {
     const ingredient = await this.repository.findOneBy({ id: id });
 
