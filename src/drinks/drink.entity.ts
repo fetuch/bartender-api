@@ -66,6 +66,7 @@ export class Drink {
 
   @ManyToOne(() => User, (user) => user.drinks)
   @JoinColumn({ name: "creator_id" })
+  @Expose()
   creator: User;
 
   @Column({ nullable: true })

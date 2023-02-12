@@ -53,7 +53,7 @@ export class DrinksController {
   @Get(":id")
   @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    const drink = await this.drinksService.getDrink(id);
+    const drink = await this.drinksService.findOne(id);
 
     if (!drink) {
       throw new NotFoundException();
@@ -77,7 +77,7 @@ export class DrinksController {
     @Body() input: UpdateDrinkDto,
     @CurrentUser() user: User
   ) {
-    const drink = await this.repository.findOneBy({ id: id });
+    const drink = await this.drinksService.findOne(id);
 
     if (!drink) {
       throw new NotFoundException();
@@ -100,7 +100,7 @@ export class DrinksController {
     @Param("id", ParseIntPipe) id: number,
     @CurrentUser() user: User
   ) {
-    const drink = await this.repository.findOneBy({ id: id });
+    const drink = await this.drinksService.findOne(id);
 
     if (!drink) {
       throw new NotFoundException();
@@ -113,6 +113,6 @@ export class DrinksController {
       );
     }
 
-    await this.repository.remove(drink);
+    await this.drinksService.deleteDrink(id);
   }
 }
