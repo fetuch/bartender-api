@@ -46,6 +46,9 @@ export class Drink {
   @Expose()
   ingredients: Ingredient[];
 
+  @Expose()
+  ingredientsCount?: number;
+
   @Column()
   @Expose()
   name: string;

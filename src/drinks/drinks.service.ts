@@ -2,9 +2,9 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/auth/user.entity";
 import { DeleteResult, Repository, SelectQueryBuilder } from "typeorm";
-import { CreateDrinkDto } from "./create-drink.dto";
+import { CreateDrinkDto } from "./input/create-drink.dto";
 import { Drink } from "./drink.entity";
-import { UpdateDrinkDto } from "./update-drink.dto";
+import { UpdateDrinkDto } from "./input/update-drink.dto";
 
 @Injectable()
 export class DrinksService {
@@ -17,8 +17,15 @@ export class DrinksService {
 
   private getDrinksBaseQuery(): SelectQueryBuilder<Drink> {
     return this.drinksRepository
-      .createQueryBuilder("drink")
-      .orderBy("drink.id", "DESC");
+      .createQueryBuilder("d")
+      .orderBy("d.id", "DESC");
+  }
+
+  public getDrinksWithIngredientsCountQuery() {
+    return this.getDrinksBaseQuery().loadRelationCountAndMap(
+      "d.ingredientsCount",
+      "d.ingredients"
+    );
   }
 
   public async findOne(id: number): Promise<Drink | undefined> {

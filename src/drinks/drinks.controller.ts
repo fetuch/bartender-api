@@ -1,7 +1,7 @@
 import { Repository } from "typeorm/repository/Repository";
-import { CreateDrinkDto } from "./create-drink.dto";
+import { CreateDrinkDto } from "./input/create-drink.dto";
+import { UpdateDrinkDto } from "./input/update-drink.dto";
 import { Drink } from "./drink.entity";
-import { UpdateDrinkDto } from "./update-drink.dto";
 import {
   Body,
   Controller,
@@ -43,10 +43,13 @@ export class DrinksController {
   @UseInterceptors(ClassSerializerInterceptor)
   async findAll() {
     this.logger.log("Hit the find all drinks route");
-    const drinks = await this.repository.find({
-      relations: ["category"],
-    });
-    this.logger.debug(`Found ${drinks.length} drinks.`);
+    // const drinks = await this.repository.find({
+    //   relations: ["category"],
+    // });
+    const drinks = await this.drinksService
+      .getDrinksWithIngredientsCountQuery()
+      .getMany();
+    // this.logger.debug(`Found ${drinks.length} drinks.`);
     return drinks;
   }
 
