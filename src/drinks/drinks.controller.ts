@@ -12,6 +12,7 @@ import {
   Logger,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -51,14 +52,8 @@ export class DrinksController {
 
   @Get(":id")
   @UseInterceptors(ClassSerializerInterceptor)
-  async findOne(@Param("id") id: number) {
+  async findOne(@Param("id", ParseIntPipe) id: number) {
     const drink = await this.drinksService.getDrink(id);
-    // const drink = await this.repository.findOne({
-    //   where: {
-    //     id,
-    //   },
-    //   relations: ["category"],
-    // });
 
     if (!drink) {
       throw new NotFoundException();
@@ -78,7 +73,7 @@ export class DrinksController {
   @UseGuards(AuthGuardJwt)
   @UseInterceptors(ClassSerializerInterceptor)
   async update(
-    @Param("id") id: number,
+    @Param("id", ParseIntPipe) id: number,
     @Body() input: UpdateDrinkDto,
     @CurrentUser() user: User
   ) {
@@ -101,7 +96,10 @@ export class DrinksController {
   @Delete(":id")
   @UseGuards(AuthGuardJwt)
   @HttpCode(204)
-  async remove(@Param("id") id: number, @CurrentUser() user: User) {
+  async remove(
+    @Param("id", ParseIntPipe) id: number,
+    @CurrentUser() user: User
+  ) {
     const drink = await this.repository.findOneBy({ id: id });
 
     if (!drink) {

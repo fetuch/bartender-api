@@ -14,6 +14,10 @@ import { Expose } from "class-transformer";
 
 @Entity({ name: "drinks" })
 export class Drink {
+  constructor(partial?: Partial<Drink>) {
+    Object.assign(this, partial);
+  }
+
   @PrimaryGeneratedColumn()
   @Expose()
   id: number;

@@ -30,12 +30,14 @@ export class DrinksService {
   }
 
   public async createDrink(input: CreateDrinkDto, user: User): Promise<Drink> {
-    return await this.drinksRepository.save({
-      ...input,
-      creator: user,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+    return await this.drinksRepository.save(
+      new Drink({
+        ...input,
+        creator: user,
+        created_at: new Date(),
+        updated_at: new Date(),
+      })
+    );
   }
 
   public async updateDrink(
