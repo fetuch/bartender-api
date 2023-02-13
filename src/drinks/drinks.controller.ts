@@ -4,6 +4,7 @@ import { UpdateDrinkDto } from "./input/update-drink.dto";
 import { Drink } from "./drink.entity";
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   ForbiddenException,
@@ -15,41 +16,38 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm/dist";
 import { DrinksService } from "./drinks.service";
 import { CurrentUser } from "src/auth/current-user.decorator";
 import { User } from "src/auth/user.entity";
 import { AuthGuardJwt } from "src/auth/auth-guard.jwt";
-import {
-  ClassSerializerInterceptor,
-  SerializeOptions,
-} from "@nestjs/common/serializer";
-import { UseInterceptors } from "@nestjs/common/decorators";
+import { ListDrinks } from "./input/list.drinks";
 
 @Controller("/drinks")
 @SerializeOptions({ strategy: "excludeAll" })
 export class DrinksController {
   private readonly logger = new Logger(DrinksController.name);
 
-  constructor(
-    @InjectRepository(Drink)
-    private readonly repository: Repository<Drink>,
-    private readonly drinksService: DrinksService
-  ) {}
+  constructor(private readonly drinksService: DrinksService) {}
 
   @Get()
+  @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(ClassSerializerInterceptor)
-  async findAll() {
+  async findAll(@Query() filter: ListDrinks) {
     this.logger.log("Hit the find all drinks route");
-    // const drinks = await this.repository.find({
-    //   relations: ["category"],
-    // });
-    const drinks = await this.drinksService
-      .getDrinksWithIngredientsCountQuery()
-      .getMany();
-    // this.logger.debug(`Found ${drinks.length} drinks.`);
+
+    const drinks = await this.drinksService.getDrinksFilteredPaginated(filter, {
+      total: true,
+      currentPage: filter.page,
+      limit: 10,
+    });
+
     return drinks;
   }
 

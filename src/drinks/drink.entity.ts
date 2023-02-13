@@ -11,6 +11,7 @@ import { Category } from "../categories/category.entity";
 import { Ingredient } from "src/ingredients/ingredient.entity";
 import { User } from "src/auth/user.entity";
 import { Expose } from "class-transformer";
+import { PaginationResult } from "src/pagination/paginator";
 
 @Entity({ name: "drinks" })
 export class Drink {
@@ -75,3 +76,5 @@ export class Drink {
   @Column({ nullable: true })
   creator_id: number;
 }
+
+export type PaginatedDrinks = PaginationResult<Drink>;

@@ -3,8 +3,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/auth/user.entity";
 import { DeleteResult, Repository, SelectQueryBuilder } from "typeorm";
 import { CreateDrinkDto } from "./input/create-drink.dto";
-import { Drink } from "./drink.entity";
+import { Drink, PaginatedDrinks } from "./drink.entity";
 import { UpdateDrinkDto } from "./input/update-drink.dto";
+import { ListDrinks } from "./input/list.drinks";
+import { paginate, PaginateOptions } from "src/pagination/paginator";
 
 @Injectable()
 export class DrinksService {
@@ -21,10 +23,32 @@ export class DrinksService {
       .orderBy("d.id", "DESC");
   }
 
-  public getDrinksWithIngredientsCountQuery() {
+  public getDrinksWithIngredientsCountQuery(): SelectQueryBuilder<Drink> {
     return this.getDrinksBaseQuery().loadRelationCountAndMap(
       "d.ingredientsCount",
       "d.ingredients"
+    );
+  }
+
+  private getDrinksWithIngredientsCountFilteredQuery(
+    filter?: ListDrinks
+  ): SelectQueryBuilder<Drink> {
+    const query = this.getDrinksWithIngredientsCountQuery();
+
+    if (!filter) {
+      return query;
+    }
+
+    return query;
+  }
+
+  public async getDrinksFilteredPaginated(
+    filter: ListDrinks,
+    paginateOptions: PaginateOptions
+  ): Promise<PaginatedDrinks> {
+    return await paginate(
+      await this.getDrinksWithIngredientsCountFilteredQuery(filter),
+      paginateOptions
     );
   }
 
