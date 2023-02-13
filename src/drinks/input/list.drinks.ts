@@ -1,6 +1,7 @@
-import { IsNumberString } from "class-validator";
+import { IsNumberString, IsOptional } from "class-validator";
 
 export class ListDrinks {
+  @IsOptional()
   @IsNumberString()
-  page = 1;
+  page: number;
 }

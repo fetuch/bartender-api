@@ -1,7 +1,5 @@
-import { Repository } from "typeorm/repository/Repository";
 import { CreateDrinkDto } from "./input/create-drink.dto";
 import { UpdateDrinkDto } from "./input/update-drink.dto";
-import { Drink } from "./drink.entity";
 import {
   Body,
   ClassSerializerInterceptor,
@@ -44,8 +42,8 @@ export class DrinksController {
 
     const drinks = await this.drinksService.getDrinksFilteredPaginated(filter, {
       total: true,
-      currentPage: filter.page,
-      limit: 10,
+      currentPage: filter.page || 1,
+      limit: 2,
     });
 
     return drinks;
