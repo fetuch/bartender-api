@@ -47,7 +47,7 @@ export class DrinksService {
     paginateOptions: PaginateOptions
   ): Promise<PaginatedDrinks> {
     return await paginate(
-      await this.getDrinksWithIngredientsCountFilteredQuery(filter),
+      this.getDrinksWithIngredientsCountFilteredQuery(filter),
       paginateOptions
     );
   }

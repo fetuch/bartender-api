@@ -35,7 +35,7 @@ export class DrinksController {
   constructor(private readonly drinksService: DrinksService) {}
 
   @Get()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  // @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(ClassSerializerInterceptor)
   async findAll(@Query() filter: ListDrinks) {
     this.logger.log("Hit the find all drinks route");

@@ -14,12 +14,16 @@ export class PaginationResult<T> {
 
   @Expose()
   first: number;
+
   @Expose()
   last: number;
+
   @Expose()
   limit: number;
+
   @Expose()
   total?: number;
+
   @Expose()
   data: T[];
 }
