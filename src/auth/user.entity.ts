@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Drink } from "src/drinks/drink.entity";
+import { Drink } from "./../drinks/drink.entity";
 import { Profile } from "./profile.entity";
 
 @Entity()

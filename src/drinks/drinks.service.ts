@@ -1,12 +1,12 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/auth/user.entity";
+import { User } from "./../auth/user.entity";
 import { DeleteResult, Repository, SelectQueryBuilder } from "typeorm";
 import { CreateDrinkDto } from "./input/create-drink.dto";
 import { Drink, PaginatedDrinks } from "./drink.entity";
 import { UpdateDrinkDto } from "./input/update-drink.dto";
 import { ListDrinks } from "./input/list.drinks";
-import { paginate, PaginateOptions } from "src/pagination/paginator";
+import { paginate, PaginateOptions } from "./../pagination/paginator";
 
 @Injectable()
 export class DrinksService {

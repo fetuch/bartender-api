@@ -8,10 +8,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Category } from "../categories/category.entity";
-import { Ingredient } from "src/ingredients/ingredient.entity";
-import { User } from "src/auth/user.entity";
+import { Ingredient } from "./../ingredients/ingredient.entity";
+import { User } from "./../auth/user.entity";
 import { Expose } from "class-transformer";
-import { PaginationResult } from "src/pagination/paginator";
+import { PaginationResult } from "./../pagination/paginator";
 
 @Entity({ name: "drinks" })
 export class Drink {

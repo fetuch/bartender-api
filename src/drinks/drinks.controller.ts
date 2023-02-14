@@ -23,9 +23,9 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { DrinksService } from "./drinks.service";
-import { CurrentUser } from "src/auth/current-user.decorator";
-import { User } from "src/auth/user.entity";
-import { AuthGuardJwt } from "src/auth/auth-guard.jwt";
+import { CurrentUser } from "./../auth/current-user.decorator";
+import { User } from "./../auth/user.entity";
+import { AuthGuardJwt } from "./../auth/auth-guard.jwt";
 import { ListDrinks } from "./input/list.drinks";
 
 @Controller("/drinks")

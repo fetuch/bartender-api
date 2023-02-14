@@ -1,4 +1,4 @@
-import { Drink } from "src/drinks/drink.entity";
+import { Drink } from "./../drinks/drink.entity";
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Expose } from "class-transformer";
 
