@@ -68,7 +68,10 @@ export class Drink {
   @Column()
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.drinks)
+  @ManyToOne(() => User, (user) => user.drinks, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "creator_id" })
   @Expose()
   creator: User;
