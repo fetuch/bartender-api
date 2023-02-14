@@ -3,5 +3,5 @@ import { IsNumberString, IsOptional } from "class-validator";
 export class ListDrinks {
   @IsOptional()
   @IsNumberString()
-  page: number;
+  page: number; //TODO: change
 }

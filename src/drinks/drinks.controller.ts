@@ -4,6 +4,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  DefaultValuePipe,
   Delete,
   ForbiddenException,
   Get,
@@ -37,12 +38,15 @@ export class DrinksController {
   @Get()
   // @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(ClassSerializerInterceptor)
-  async findAll(@Query() filter: ListDrinks) {
+  async findAll(
+    @Query() filter: ListDrinks,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page = 1
+  ) {
     this.logger.log("Hit the find all drinks route");
 
     const drinks = await this.drinksService.getDrinksFilteredPaginated(filter, {
       total: true,
-      currentPage: filter.page || 1,
+      currentPage: page,
       limit: 2,
     });
 
