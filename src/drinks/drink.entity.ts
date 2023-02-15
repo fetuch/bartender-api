@@ -23,6 +23,24 @@ export class Drink {
   @Expose()
   id: number;
 
+  @Column()
+  @Expose()
+  name: string;
+
+  @Column()
+  @Expose()
+  glass: string;
+
+  @Column()
+  @Expose()
+  instructions: string;
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
+
   @ManyToOne(() => Category, (category) => category.drinks, {
     nullable: false,
   })
@@ -47,27 +65,6 @@ export class Drink {
   @Expose()
   ingredients: Ingredient[];
 
-  @Expose()
-  ingredientsCount?: number;
-
-  @Column()
-  @Expose()
-  name: string;
-
-  @Column()
-  @Expose()
-  glass: string;
-
-  @Column()
-  @Expose()
-  instructions: string;
-
-  @Column()
-  created_at: Date;
-
-  @Column()
-  updated_at: Date;
-
   @ManyToOne(() => User, (user) => user.drinks, {
     nullable: true,
     onDelete: "CASCADE",
@@ -78,6 +75,9 @@ export class Drink {
 
   @Column({ nullable: true })
   creator_id: number;
+
+  @Expose()
+  ingredientsCount?: number;
 }
 
 export type PaginatedDrinks = PaginationResult<Drink>;
